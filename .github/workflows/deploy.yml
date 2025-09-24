@@ -26,30 +26,58 @@ jobs:
         with:
           ruby-version: '3.2'
 
-      - name: Install dependencies
+      - name: Print environment
         run: |
-          gem install kramdown
+          set -ux
+          ruby -v
+          which ruby
+
+      - name: Install dependencies (common for wruby)
+        run: |
+          set -eux
+          gem install kramdown || true
+          gem install redcarpet || true
+
+      - name: Sanity check repo contents
+        run: |
+          set -eux
+          ls -la
+          test -f wruby.rb || { echo "wruby.rb not found at repo root"; exit 1; }
 
       - name: Build static site
         run: |
+          set -eux
           ruby wruby.rb
 
-      - name: Show output tree
+      - name: Show output trees (public/ and build/ if present)
         run: |
-          ls -la public | sed -n '1,200p'
+          set -eux
+          [ -d public ] && { echo "public/ tree:"; ls -la public | sed -n '1,200p'; } || true
+          [ -d build ]  && { echo "build/ tree:";  ls -la build  | sed -n '1,200p'; } || true
 
-      - name: Verify index.html exists
+      - name: Detect output dir
+        id: detect
         run: |
-          test -f public/index.html
+          set -eux
+          if [ -f public/index.html ]; then
+            echo "outdir=public" >> "$GITHUB_OUTPUT"
+          elif [ -f build/index.html ]; then
+            echo "outdir=build" >> "$GITHUB_OUTPUT"
+          else
+            echo "No index.html found in public/ or build/."
+            echo "If your generator writes elsewhere, adjust the path or ensure it creates index.html."
+            exit 1
+          fi
 
       - name: Disable Jekyll
         run: |
-          touch public/.nojekyll
+          set -eux
+          touch "${{ steps.detect.outputs.outdir }}/.nojekyll"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ${{ steps.detect.outputs.outdir }}
 
   deploy:
     needs: build
