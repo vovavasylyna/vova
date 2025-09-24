@@ -26,18 +26,19 @@ jobs:
         with:
           ruby-version: '3.2'
 
-      - name: Build static site with wruby
+      - name: Install dependencies
+        run: |
+          gem install kramdown
+
+      - name: Build static site
         run: |
           ruby wruby.rb
-          ls -la
+          ls -la public
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # If your generator writes to ./public (typical wruby), leave as-is:
           path: ./public
-          # If your generator writes to ./build instead, change to:
-          # path: ./build
 
   deploy:
     needs: build
