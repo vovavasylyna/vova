@@ -33,7 +33,18 @@ jobs:
       - name: Build static site
         run: |
           ruby wruby.rb
-          ls -la public
+
+      - name: Show output tree
+        run: |
+          ls -la public | sed -n '1,200p'
+
+      - name: Verify index.html exists
+        run: |
+          test -f public/index.html
+
+      - name: Disable Jekyll
+        run: |
+          touch public/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
