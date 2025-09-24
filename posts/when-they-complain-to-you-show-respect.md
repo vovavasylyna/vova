@@ -1,0 +1,13 @@
+# When they complain to you, show respect
+
+2023-09-09
+
+If a person is not feeling good and complains about a problem, talks about some kind of pain, difficulties, then probably this problem is big and significant for them. If you, as a listener, suddenly saw a "simple solution" and rushed to share it with them, then you completely devalued the problem itself: "Okay, hold on. The fact that I've been sad for three days is not a problem for you at all? Am I stupid that I didn't find a way to solve the problem? My problem is nonsense then?” At such a moment, it is difficult to even assess how well the proposed solution really fits, because it seems completely surprising that another person found it so quickly.
+
+Let's imagine the same situation without any strong emotions. Say, you are analyzing something complex at work, you have spent many hours discussing it with all the stakeholders, you have spent many hours thinking on your own, but you cannot find an explanation for some tiny little detail. You invite a colleague to consult, try to immerse them in the details, and they, without even listening to all the nuances to the end, say, "So just add a column of data here, and everything will come together!" Perhaps this is a brilliant insight, which you will immediately accept, saying, "I'm an idiot! I've been racking my brain for three days, but it could have been done so easily!", yet it's highly unlikely. Rather, the reality will be that the advisor did not understand things at all, and you yourself also thought of this option first and found like a dozen of reasons why it wasn't suitable.
+
+Obviously given the discussion is not about work but a personal issue related to feelings and emotions, then a "simple solution" is almost guaranteed to indicate unwillingness to delve into the problem, that is, indifference. No wonder it'll be infuriating.
+
+The real question is why men often find themselves in the role of generating such "easy solutions" for women. And this is because many men sincerely feel smarter than women. They are convinced that they know better how to act. A woman, before giving simple advice, is more likely to think, "He must have guessed it himself, but the problem is more complicated." And the man is more likely to think, "Probably, she didn't guess it herself, but the problem is actually very easy to solve."
+
+Therefore, the good advice is not to feel sorry condescendingly, but to respect and not think that you are better. And already from this position, you can help with solutions, if it is necessary.‌

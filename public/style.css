@@ -1,0 +1,169 @@
+*{box-sizing:border-box;}
+
+body {
+  background: #f2f2f2;
+  font-family: "Georgia", serif;
+  line-height: 1.33;
+  margin: 0 auto;
+  max-width: 680px;
+  padding: 0 10px;
+  width: 100%;
+}
+
+header nav ul {
+    list-style: none;
+    font-family: sans-serif;
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+header nav ul li {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+}
+header nav a {
+    background: white;
+    border: 1px solid black;
+    cursor: pointer;
+    display: block;
+    padding: 6px;
+}
+li.more {
+    display: none;
+}
+
+main {
+    background: white;
+    border: 1px solid;
+    margin: 0;
+    padding: 0 15px;
+}
+main p {
+    text-align: justify;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: sans-serif;
+}
+h1 {
+    border-bottom: 1px solid;
+    line-height: 1.25;
+    margin: 15px 0 0 0;
+}
+
+h1#posts ~ ul {
+  list-style: none;
+  padding-left: 0;
+}
+h1#posts ~ ul li a {
+  display: block;
+  margin-bottom: 15px;
+}
+
+h2{ 
+    border-bottom: 1px solid lightgrey;
+    font-size: 18px; 
+    margin: 2rem 0 0; 
+}
+
+h3 {
+  font-size: 16px;
+}
+
+dd {
+  margin-bottom: 10px;
+}
+
+img{height:auto;max-width:100%;}
+
+blockquote {
+    color: brown;
+    font-style: italic;
+}
+
+figure { margin: 2.5rem auto; }
+figure img { display: block; margin: 0 auto 10px; }
+figcaption { text-align: center; }
+
+pre, p code, li code { font-size: 14px; }
+
+pre {
+  background: #f2f2f2;
+  padding: 6px;
+  overflow: auto;
+}
+pre:has(code.language-diagram) {
+    background: none;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 2rem 0;
+  text-align: left;
+  width: 100%;
+}
+table caption {
+  background: #f2f2f2;
+  padding: 4px;
+}
+table tr {
+  border-bottom: 1px solid;
+}
+table td, table th {
+  padding: 4px;
+}
+
+footer {
+    padding: 0 10px;
+    margin: 1rem 0 2rem;
+}
+
+.footnotes {
+  font-size: 90%;
+  margin-top: 2rem;
+}
+
+.footer-nav {
+    display: none;
+}
+
+.w-100 {
+  max-width: 100px;
+}
+
+@media(max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    header nav ul {
+        margin: 0;
+    }
+    header nav ul li:nth-of-type(4),
+    header nav ul li:nth-of-type(5) {
+        display: none;
+    }
+    li.more {
+        display: inline-block;
+    }
+    .footer-nav {
+        display: block;
+    }
+}
+
+@media(prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+  }
+  header nav a {
+    background: black;
+    border-color: white;
+  }
+  main {
+    background: #1d1d1d;
+  }
+  pre {
+    background: black;
+  }
+  blockquote {
+    color: lightgoldenrodyellow;
+  }
+}

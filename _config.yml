@@ -1,0 +1,21 @@
+site_url: 'https://vasylyna.net'
+site_name: 'vova'
+author_name: 'Volodymyr Vasylyna'
+
+directories:
+  posts: 'posts'
+  pages: 'pages'
+  public: 'public'
+  output: 'build'
+  posts_output: 'build/posts'
+  pages_output: 'build/'
+  
+files:
+  header: 'header.html'
+  footer: 'footer.html'
+  root_index: 'index.md'
+  posts_index: 'pages/posts.md'
+  rss: 'build/index.rss'
+
+misc:
+  post_count: 0
