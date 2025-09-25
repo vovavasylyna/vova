@@ -72,7 +72,7 @@ All time reading stats
         </tr>
         <tr>
             <td align="left">2025</td>
-            <td align="left">6</td>
+            <td align="left">7</td>
         </tr>
     </tbody>
 </table>
@@ -87,6 +87,7 @@ These are the books I read
 * Точка нуль – Артем Чех
 * Вівці цілі – Євгенія Кузнєцова
 * Звіяні вітром. Книга 1 – Маргарет Мітчелл
+* Гра в перевдягання – Артем Чех
 
 <details>
 <summary>2024</summary>

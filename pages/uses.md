@@ -22,8 +22,7 @@ This page contains a somewhat up-to-date listing of all hardware and software th
 ## Software
 
 - Chrome
-- Microsoft 365 (Excel, Powerpoint, Word, Teams)
-- SAP Analytics Cloud, SAP Analysis for Office, Databricks, Adobe Analytics
-- Google Docs, Google Sheets
+- Microsoft 365 (Excel, Powerpoint, Word, Teams), Google Sheets, Google Docs
+- SAP Analytics Cloud, Databricks, Adobe Analytics
 - Visual Studio Code
 - Feedly
