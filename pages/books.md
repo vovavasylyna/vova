@@ -72,7 +72,7 @@ All time reading stats
         </tr>
         <tr>
             <td align="left">2025</td>
-            <td align="left">7</td>
+            <td align="left">8</td>
         </tr>
     </tbody>
 </table>
@@ -88,6 +88,7 @@ These are the books I read
 * Вівці цілі – Євгенія Кузнєцова
 * Звіяні вітром. Книга 1 – Маргарет Мітчелл
 * Гра в перевдягання – Артем Чех
+* Звіяні вітром. Книга 2 – Маргарет Мітчелл
 
 <details>
 <summary>2024</summary>
