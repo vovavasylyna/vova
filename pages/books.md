@@ -72,7 +72,7 @@ All time reading stats
         </tr>
         <tr>
             <td align="left">2025</td>
-            <td align="left">8</td>
+            <td align="left">9</td>
         </tr>
     </tbody>
 </table>
@@ -89,6 +89,7 @@ These are the books I read
 * Звіяні вітром. Книга 1 – Маргарет Мітчелл
 * Гра в перевдягання – Артем Чех
 * Звіяні вітром. Книга 2 – Маргарет Мітчелл
+* Найбагатший чоловік у Вавилоні – Джордж Клейсон
 
 <details>
 <summary>2024</summary>
