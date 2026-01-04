@@ -4,9 +4,9 @@ This page contains a somewhat up-to-date listing of all hardware and software th
 
 ## Services
 
+- [Claude](https://claude.ai) Pro plan - $20/month
 - [iCloud+](https://www.apple.com/icloud/) 200 GB – $3/month
 - [Youtube Premium](https://nearlyfreespeech.net) family membership – $4/month
-- [Megogo](https://megogo.net/) TV and movies – $5/month
 - [Cloudflare Registrar](https://www.cloudflare.com/) renewal fees for 2 domains – $2/month
 - [Github Pages](https://pages.github.com/) hosting – $0/month
 
@@ -21,8 +21,7 @@ This page contains a somewhat up-to-date listing of all hardware and software th
 
 ## Software
 
-- Chrome
-- Microsoft 365 (Excel, Powerpoint, Word, Teams), Google Sheets, Google Docs
-- SAP Analytics Cloud, Databricks, Adobe Analytics
+- Safari
+- Databricks, SAP Analytics Cloud, Adobe Analytics
+- Microsoft 365 (Outlook, Excel, Powerpoint, Word, Teams), Google Sheets, Google Docs
 - Visual Studio Code
-- Feedly
