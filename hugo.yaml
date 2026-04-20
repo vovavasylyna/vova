@@ -1,0 +1,39 @@
+baseURL: https://vasylyna.net
+languageCode: en
+title: Volodymyr Vasylyna Website
+
+menus:
+  main:
+    - name: home
+      url: /
+      weight: 1
+    - name: posts
+      url: /posts/
+      weight: 2
+    - name: reading
+      url: /books/
+      weight: 3
+    - name: renovation
+      url: /renovation/
+      weight: 4
+    - name: uses
+      url: /uses/
+      weight: 5
+    - name: travel
+      url: /travel/
+      weight: 6
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+
+outputFormats:
+  RSS:
+    mediaType: application/rss+xml
+    baseName: index

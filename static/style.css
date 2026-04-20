@@ -1,0 +1,161 @@
+:root {
+  --bg: #fff;
+  --bg-alt: #eee;
+  --text: #000;
+  --text-emph: #000;
+  --link: #00b;
+  --border: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141414;
+    --bg-alt: #1c1c1c;
+    --text: #fff;
+    --text-emph: #fff;
+    --link: #8ab4ff;
+    --border: #444;
+  }
+}
+
+* { box-sizing: border-box; }
+
+pre { overflow: scroll; }
+
+img { max-width: 100%; }
+
+a, a:visited { color: var(--link); }
+a:hover { text-decoration: none; }
+
+body {
+  font-size: 16px;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 800px;
+  padding: 0.5rem 1.2rem;
+}
+
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+}
+
+header nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 0.5rem 1.2rem;
+  text-align: right;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-emph);
+  margin-top: 0;
+  margin-bottom: 0.2em;
+}
+
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.2rem; }
+h3, h4, h5, h6 { font-size: 1rem; }
+
+p {
+  margin-top: 0.4rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+
+time {
+  display: block;
+  color: var(--border);
+  margin-bottom: 1rem;
+  font-family: monospace;
+}
+
+hr { color: var(--border); }
+
+blockquote {
+  border-left: 0.4rem solid var(--border);
+  margin: 1em 10px;
+  padding: 0.2em 10px;
+  font-style: italic;
+  background: var(--bg-alt);
+}
+
+pre {
+  background: var(--bg-alt);
+  padding: 6px;
+  overflow: auto;
+}
+
+pre, p code, li code { font-size: 14px; }
+
+figure { margin: 2.5rem auto; }
+figure img { display: block; margin: 0 auto 10px; }
+figcaption { text-align: center; }
+
+table {
+  border-collapse: collapse;
+  margin: 2rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+table caption {
+  background: var(--bg-alt);
+  padding: 4px;
+}
+
+table tr { border-bottom: 1px solid var(--border); }
+table td, table th { padding: 4px; }
+
+ul.posts {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+ul.posts li {
+  display: flex;
+  margin-bottom: 0.2rem;
+}
+
+ul.posts li span {
+  padding-right: 1rem;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 767px) {
+  ul.posts li {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+}
+
+details { margin: 1rem 0; }
+summary { cursor: pointer; }
+
+dd { margin-bottom: 10px; }
+
+.footnotes {
+  font-size: 90%;
+  margin-top: 2rem;
+}
+
+main a[href^="http"]:where(:not([href*="vasylyna.net/"]))::after {
+  content: "\FE0E\2197";
+}
+
+figure a::after {
+  content: "" !important;
+}
