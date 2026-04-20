@@ -10,7 +10,7 @@ menus:
     - name: posts
       url: /posts/
       weight: 2
-    - name: reading
+    - name: read
       url: /books/
       weight: 3
     - name: renovation
