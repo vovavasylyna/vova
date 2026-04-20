@@ -1,5 +1,6 @@
 ---
 title: "Why skills are more important than passion in getting the work we'll love"
+description: "Passion is overrated. Build rare, valuable skills instead—the work you love follows career capital."
 date: 2022-06-12
 ---
 

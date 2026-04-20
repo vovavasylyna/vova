@@ -1,5 +1,6 @@
 ---
 title: "On simplicity, minimalism and stress"
+description: "Minimalism isn't just tidying—it's understanding why you accumulate stuff when life gets overwhelming."
 date: 2023-11-12
 ---
 

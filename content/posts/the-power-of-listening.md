@@ -1,5 +1,6 @@
 ---
 title: "The power of listening"
+description: "Stop trying to win debates. Real persuasion comes from listening with genuine curiosity."
 date: 2023-11-16
 ---
 

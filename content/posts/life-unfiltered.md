@@ -1,5 +1,6 @@
 ---
 title: "Life unfiltered"
+description: "Planning a baby and renovating during wartime in Kyiv. Why we move forward anyway, as an act of defiance."
 date: 2025-05-02
 ---
 

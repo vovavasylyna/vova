@@ -1,5 +1,6 @@
 ---
 title: "Why you must not stay out of politics"
+description: "Staying out of politics is a choice to ignore your own future. Silence enables the policies you claim to hate."
 date: 2021-09-24
 ---
 

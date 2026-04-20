@@ -1,5 +1,6 @@
 ---
 title: "Slow productivity"
+description: "Working less doesn't fall behind—it actually improves quality and well-being. Embrace sustainable pace."
 date: 2022-01-14
 ---
 

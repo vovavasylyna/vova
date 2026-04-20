@@ -1,5 +1,6 @@
 ---
 title: "Compass"
+description: "My inner compass: the values, mantras, and evolving principles that guide my work and everyday life."
 date: 2024-12-27
 ---
 

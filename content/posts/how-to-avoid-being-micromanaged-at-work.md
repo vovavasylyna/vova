@@ -1,5 +1,6 @@
 ---
 title: "How to avoid being micromanaged at work"
+description: "Stop trying to prove yourself—instead, understand what your manager needs and help them succeed with it."
 date: 2023-09-02
 ---
 

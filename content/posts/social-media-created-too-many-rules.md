@@ -1,5 +1,6 @@
 ---
 title: "Social media created too many rules"
+description: "Platforms prioritize profit over function, ghost-ban content, hide fees, and control what you see."
 date: 2023-10-23
 ---
 

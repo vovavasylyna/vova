@@ -1,5 +1,6 @@
 ---
 title: "A better version of yourself"
+description: "Compare yourself to your past self, not others. That's the only competition you can actually win."
 date: 2021-08-10
 ---
 

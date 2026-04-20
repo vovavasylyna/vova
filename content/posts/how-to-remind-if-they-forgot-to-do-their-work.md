@@ -1,5 +1,6 @@
 ---
 title: "How to remind if they forgot to do their work"
+description: "Skip the awkward reminders—instead, resend the task details, deadlines, and materials they need to move forward."
 date: 2023-10-06
 ---
 

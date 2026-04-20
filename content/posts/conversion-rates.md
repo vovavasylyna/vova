@@ -1,5 +1,6 @@
 ---
 title: "Conversion rate optimization is not a panacea"
+description: "Why conversion rate isn't a magic number—it reflects everything about your business, not just your website."
 date: 2024-02-13
 ---
 

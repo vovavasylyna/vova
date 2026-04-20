@@ -1,5 +1,6 @@
 ---
 title: "5 ways in which social media and tech are harming our attention"
+description: "How algorithms, anger, and targeted distraction are rewiring our brains and destroying our ability to focus."
 date: 2022-04-14
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Tech skills are not that important"
+description: "Communication and business sense matter more than technical skills—they turn analysis into actual value."
 date: 2023-10-09
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Embrace our own flaws to better understand others"
+description: "We judge others harshly because we haven't accepted our own weaknesses. Embrace yourself first to help them."
 date: 2022-06-27
 ---
 

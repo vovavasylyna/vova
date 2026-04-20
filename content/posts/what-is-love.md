@@ -1,5 +1,6 @@
 ---
 title: "What is love"
+description: "Love as Rilke saw it: giving someone space to be themselves while providing security to flourish."
 date: 2022-12-12
 ---
 

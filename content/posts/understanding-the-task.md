@@ -1,5 +1,6 @@
 ---
 title: "The problem of understanding the task"
+description: "Written specs fail because people won't read them carefully. Verbal explanation with their written feedback works."
 date: 2023-10-03
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Why digital minimalism"
+description: "I quit social media and built a philosophy around intentional tech use—cutting noise to keep a sharp mind."
 date: 2021-09-03
 ---
 

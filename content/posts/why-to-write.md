@@ -1,5 +1,6 @@
 ---
 title: "Why to write"
+description: "Writing as seeing: asking why repeatedly until you understand what you actually want underneath it all."
 date: 2021-09-09
 ---
 

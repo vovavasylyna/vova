@@ -1,5 +1,6 @@
 ---
 title: "Digital reflecting physical"
+description: "How my online life mirrors my real world: from crowded cities to quiet forest cabins, and what I prefer now."
 date: 2023-09-03
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Kurakhove"
+description: "Reflections on my hometown in eastern Ukraine, destroyed by Russian missiles, and what I might have lost forever."
 date: 2024-09-24
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Breaking free from self-doubt"
+description: "How I stopped waiting to be good enough and started writing despite the fear and perfectionism holding me back."
 date: 2024-11-26
 ---
 

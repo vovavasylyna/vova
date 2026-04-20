@@ -1,5 +1,6 @@
 ---
 title: "Blog as a way of communication"
+description: "Why I'm ditching social media for blogging—a slower, deeper way to write and connect that actually builds focus."
 date: 2023-07-25
 ---
 

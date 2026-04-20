@@ -1,5 +1,6 @@
 ---
 title: "Some thoughts about growth"
+description: "Constant growth isn't sustainable. Maybe success is finding the right pace for a fulfilling life, not endless expansion."
 date: 2024-03-26
 ---
 

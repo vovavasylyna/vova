@@ -1,5 +1,6 @@
 ---
 title: "Should I share my plans in such detail?"
+description: "Talking about plans in detail exhausts the energy needed to do them. Share less, do more."
 date: 2023-07-17
 ---
 

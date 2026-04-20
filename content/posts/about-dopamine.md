@@ -1,5 +1,6 @@
 ---
 title: "About dopamine"
+description: "What I learned from Dopamine Nation about pleasure, pain, and why avoiding difficulty keeps you stuck."
 date: 2021-09-29
 ---
 

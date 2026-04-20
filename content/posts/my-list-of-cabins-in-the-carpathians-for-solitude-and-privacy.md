@@ -1,5 +1,6 @@
 ---
 title: "My list of cabins in the Carpathians for solitude and privacy"
+description: "Hidden gems in the Carpathians: beautiful, remote cabins where you can escape noise and find yourself again."
 date: 2023-07-03
 ---
 

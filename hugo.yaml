@@ -1,6 +1,15 @@
 baseURL: https://vasylyna.net
 languageCode: en
-title: Volodymyr Vasylyna Website
+title: Volodymyr Vasylyna
+defaultContentLanguage: en
+
+params:
+  description: "Blog by Volodymyr Vasylyna — on slow productivity, digital minimalism, books, and everything in between."
+  author: Volodymyr Vasylyna
+  # Used as the default Open Graph / Twitter preview image. Place the file in /static/images/.
+  ogImage: /images/og-default.jpg
+  # Optional: your handle without the @
+  twitter: ""
 
 menus:
   main:

@@ -1,5 +1,6 @@
 ---
 title: "My 5 principles for selecting a home"
+description: "How to choose where to live: density, human scale, nature, and communities that actually work for you."
 date: 2023-06-02
 ---
 

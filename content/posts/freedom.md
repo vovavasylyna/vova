@@ -1,5 +1,6 @@
 ---
 title: "Freedom"
+description: "True freedom isn't independence—it's conscious participation in a social contract and accountability to your community."
 date: 2024-10-21
 ---
 

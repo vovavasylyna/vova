@@ -1,5 +1,6 @@
 ---
 title: "Why creative people should be working like accountants"
+description: "Creative work requires discipline, not inspiration. The best artists think like artists but work like accountants."
 date: 2021-05-26
 ---
 

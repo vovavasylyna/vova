@@ -1,5 +1,6 @@
 ---
 title: "Just admit that you don't know something. It's fine"
+description: "In corporate culture, people hide uncertainty instead of admitting the truth. Honesty is stronger than pretense."
 date: 2023-01-31
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "The kindest person is often the smartest one"
+description: "Kindness and empathy require overcoming primal fear—a sign of real cognitive development, not weakness."
 date: 2023-07-07
 ---
 

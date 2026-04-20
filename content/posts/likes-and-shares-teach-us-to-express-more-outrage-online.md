@@ -1,5 +1,6 @@
 ---
 title: "Likes and shares teach us to express more outrage online"
+description: "Social media rewards outrage over nuance. The more anger you share, the more engagement you get."
 date: 2021-08-16
 ---
 

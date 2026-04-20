@@ -1,5 +1,6 @@
 ---
 title: "I think slow at work"
+description: "Why I value deliberate, slow thinking over speed—and how it leads to better decisions and deeper work."
 date: 2023-11-20
 ---
 

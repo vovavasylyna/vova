@@ -1,5 +1,6 @@
 ---
 title: "When they complain to you, show respect"
+description: "Quick advice devalues their pain. Listen first, respect that it's complex, then offer help if asked."
 date: 2023-09-09
 ---
 

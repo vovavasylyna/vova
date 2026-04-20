@@ -1,5 +1,6 @@
 ---
 title: "Struggle to think positively"
+description: "How my focus on problems kept me stuck—and why shifting to what's possible changes everything."
 date: 2021-07-09
 ---
 

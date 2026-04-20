@@ -1,5 +1,6 @@
 ---
 title: "My list of cabins in the Carpathians for solitude and privacy. Part 2"
+description: "A curated list of remote cabins in the Ukrainian Carpathians for escape, silence, and real solitude."
 date: 2024-12-04
 ---
 

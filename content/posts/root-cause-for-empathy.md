@@ -1,5 +1,6 @@
 ---
 title: "Root cause for empathy"
+description: "Maybe empathetic people had emotionally unpredictable parents—and learned to read others to survive."
 date: 2021-11-07
 ---
 

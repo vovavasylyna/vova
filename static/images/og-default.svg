@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+
+  <text x="100" y="320"
+        font-family="Georgia, 'Iowan Old Style', 'Times New Roman', serif"
+        font-size="88" font-weight="400" fill="#111111"
+        letter-spacing="-1">Volodymyr Vasylyna</text>
+
+  <text x="100" y="380"
+        font-family="Georgia, 'Iowan Old Style', 'Times New Roman', serif"
+        font-size="30" font-style="italic" fill="#555555">
+    Slow productivity, digital minimalism, and everything in between.
+  </text>
+
+  <line x1="100" y1="555" x2="1100" y2="555" stroke="#111111" stroke-width="1"/>
+
+  <text x="100" y="595"
+        font-family="Georgia, 'Iowan Old Style', 'Times New Roman', serif"
+        font-size="20" fill="#111111" letter-spacing="3">vasylyna.net</text>
+</svg>

@@ -1,5 +1,6 @@
 ---
 title: "How to get ready for Adobe Analytics certification exam"
+description: "How I prepped for and barely passed the Adobe Analytics Professional exam—what actually matters and what doesn't."
 date: 2023-06-30
 ---
 

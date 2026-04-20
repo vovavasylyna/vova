@@ -1,5 +1,6 @@
 ---
 title: "Why context switch is bad"
+description: "Checking messages while working is worse than smoking weed for your IQ. Every switch costs focus you can't recover."
 date: 2022-04-06
 ---
 

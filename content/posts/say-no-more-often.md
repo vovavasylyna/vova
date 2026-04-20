@@ -1,5 +1,6 @@
 ---
 title: "Improve your work by saying no more often"
+description: "Saying yes to everything fragments your focus. Real productivity comes from protecting your free space."
 date: 2023-09-14
 ---
 

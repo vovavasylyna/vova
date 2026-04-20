@@ -1,5 +1,6 @@
 ---
 title: "RSS, and How To Subscribe To My Blog"
+description: "Why RSS is better than social media for reading blogs, and how to use it to reclaim your attention."
 date: 2023-09-29
 ---
 

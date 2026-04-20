@@ -1,5 +1,6 @@
 ---
 title: "Productivity and self-development hustle all over Youtube"
+description: "YouTube's productivity advice is often clickbait dressed up as self-help. Build an information diet instead."
 date: 2022-01-09
 ---
 

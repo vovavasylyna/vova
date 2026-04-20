@@ -1,5 +1,6 @@
 ---
 title: "Youtube has become ubiquitous"
+description: "I swapped Instagram for YouTube and thought I'd escaped social media. But I just traded one addiction for another."
 date: 2021-10-26
 ---
 

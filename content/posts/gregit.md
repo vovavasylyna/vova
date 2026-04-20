@@ -1,5 +1,6 @@
 ---
 title: "Gregit"
+description: "My honeymoon in a remote Carpathian cabin: why solitude and nature matter, and what we discovered there."
 date: 2024-08-26
 ---
 

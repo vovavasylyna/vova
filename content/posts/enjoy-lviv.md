@@ -1,5 +1,6 @@
 ---
 title: "How to enjoy Lviv"
+description: "My guide to Lviv: where to stay, eat, and explore—from ramen and galleries to the haunting beauty of Lychakiv Cemetery."
 date: 2025-09-27
 ---
 
