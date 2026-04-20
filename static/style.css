@@ -152,10 +152,3 @@ dd { margin-bottom: 10px; }
   margin-top: 2rem;
 }
 
-main a[href^="http"]:where(:not([href*="vasylyna.net/"]))::after {
-  content: "\FE0E\2197";
-}
-
-figure a::after {
-  content: "" !important;
-}
