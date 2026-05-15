@@ -23,7 +23,7 @@ So while exploring Batumi why not to list here all the countries and cities I ev
 |13|Italy|Rome, Florence, Siena|
 |14|Lithuania|Vilnius|
 |15|Netherlands|Maastricht|
-|16|Poland|Krakow, Wroclaw|
+|16|Poland|Krakow, Wroclaw, Warsaw|
 |17|Slovakia|Bratislava|
 |18|Spain|Barcelona, Palma de Majorca|
 |19|Sweden|Malmo|

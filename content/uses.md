@@ -11,9 +11,8 @@ Updated on 2026-04-24.
 
 - [Claude](https://claude.ai) Max plan - $100/month
 - [iCloud+](https://www.apple.com/icloud/) 200 GB – $3/month
-- [Youtube Premium](https://nearlyfreespeech.net) family membership – $4/month
-- [Cloudflare Registrar](https://www.cloudflare.com/) renewal fees for 2 domains – $2/month
-- [Github Pages](https://pages.github.com/) hosting – $0/month
+- [Youtube Premium](https://www.youtube.com/premium) family membership – $4/month
+- [Cloudflare Registrar](https://www.cloudflare.com/) renewal fees for 2 domains – $4/month
 
 ## Work Laptop
 
@@ -26,7 +25,7 @@ Updated on 2026-04-24.
 
 ## Software
 
-- Safaris
+- Safari
 - Databricks, SAP Analytics Cloud, Adobe Analytics
 - Visual Studio Code
 
