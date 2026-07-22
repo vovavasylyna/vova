@@ -44,24 +44,40 @@ async function resend(path, method, body) {
       Authorization: `Bearer ${RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body: body === undefined ? undefined : JSON.stringify(body),
   });
 }
 
-// Add (or re-subscribe) a confirmed contact. POST creates a new contact; if it already
-// exists, PATCH flips `unsubscribed` back to false so re-subscribing works too.
+// Add (or re-subscribe) a confirmed contact.
+//
+// New contact  → POST /contacts, which can attach the segment in one call.
+// Existing one → POST fails, so PATCH clears `unsubscribed` and a second call puts
+//                them back in the segment (PATCH alone cannot change membership).
+//
+// Note `segments` takes objects, not bare ids: [{ id }] — a plain [id] is rejected.
 async function subscribeContact(email) {
   const contact = { email, unsubscribed: false };
-  if (RESEND_SEGMENT_ID) contact.segments = [RESEND_SEGMENT_ID];
+  if (RESEND_SEGMENT_ID) contact.segments = [{ id: RESEND_SEGMENT_ID }];
 
   const created = await resend('/contacts', 'POST', contact);
   if (created.ok) return true;
+  const createdDetail = await created.text();
 
   const updated = await resend(`/contacts/${encodeURIComponent(email)}`, 'PATCH', { unsubscribed: false });
-  if (updated.ok) return true;
+  if (!updated.ok) {
+    console.error('Resend subscribe failed', created.status, createdDetail, updated.status, await updated.text());
+    return false;
+  }
 
-  console.error('Resend subscribe failed', created.status, await created.text(), updated.status, await updated.text());
-  return false;
+  if (RESEND_SEGMENT_ID) {
+    const seg = await resend(
+      `/contacts/${encodeURIComponent(email)}/segments/${encodeURIComponent(RESEND_SEGMENT_ID)}`,
+      'POST'
+    );
+    // Already-a-member is fine; only log a genuine failure. They are subscribed either way.
+    if (!seg.ok) console.error('Could not add re-subscriber to segment', seg.status, await seg.text());
+  }
+  return true;
 }
 
 // Fire-and-forget heads-up to the site owner. Never allowed to break the
@@ -85,17 +101,20 @@ module.exports = async (req, res) => {
   const email = verifyToken(req.query.token);
   if (!email) return res.redirect(302, '/subscribe-invalid/');
 
+  // Past this point the link itself was valid, so any failure is ours, not the
+  // reader's. Sending them to "link expired" would be a lie that tells them to
+  // retry something that will fail again — /subscribe-error/ says so honestly.
   if (!RESEND_API_KEY || !NEWSLETTER_SECRET) {
     console.error('Newsletter misconfigured: RESEND_API_KEY and/or NEWSLETTER_SECRET is missing');
-    return res.redirect(302, '/subscribe-invalid/');
+    return res.redirect(302, '/subscribe-error/');
   }
 
   try {
     const ok = await subscribeContact(email);
     if (ok) await notifyOwner(email);
-    return res.redirect(302, ok ? '/subscribed/' : '/subscribe-invalid/');
+    return res.redirect(302, ok ? '/subscribed/' : '/subscribe-error/');
   } catch (err) {
     console.error('Resend request error', err);
-    return res.redirect(302, '/subscribe-invalid/');
+    return res.redirect(302, '/subscribe-error/');
   }
 };
