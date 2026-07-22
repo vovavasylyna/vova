@@ -8,9 +8,12 @@ const crypto = require('crypto');
 const {
   RESEND_API_KEY,
   NEWSLETTER_SECRET,
-  // Optional: if set, confirmed contacts are also added to this Resend segment.
-  // Leave unset to just add them to your global contact list.
+  // Confirmed contacts are added to this Resend segment. Broadcasts target a
+  // segment, so without it the newsletter has nobody to send to.
   RESEND_SEGMENT_ID,
+  NEWSLETTER_FROM = 'Volodymyr Vasylyna <newsletter@vasylyna.net>',
+  // Where to send "you have a new subscriber" notifications. Unset = no notifications.
+  NOTIFY_EMAIL,
 } = process.env;
 
 const b64urlToBuf = (s) => Buffer.from(String(s).replace(/-/g, '+').replace(/_/g, '/'), 'base64');
@@ -61,6 +64,23 @@ async function subscribeContact(email) {
   return false;
 }
 
+// Fire-and-forget heads-up to the site owner. Never allowed to break the
+// subscription itself — a failed notification is logged and ignored.
+async function notifyOwner(email) {
+  if (!NOTIFY_EMAIL) return;
+  try {
+    const r = await resend('/emails', 'POST', {
+      from: NEWSLETTER_FROM,
+      to: NOTIFY_EMAIL,
+      subject: `New newsletter subscriber: ${email}`,
+      text: `${email} just confirmed their subscription to the vasylyna.net newsletter.`,
+    });
+    if (!r.ok) console.error('Subscriber notification failed', r.status, await r.text());
+  } catch (err) {
+    console.error('Subscriber notification error', err);
+  }
+}
+
 module.exports = async (req, res) => {
   const email = verifyToken(req.query.token);
   if (!email) return res.redirect(302, '/subscribe-invalid/');
@@ -72,6 +92,7 @@ module.exports = async (req, res) => {
 
   try {
     const ok = await subscribeContact(email);
+    if (ok) await notifyOwner(email);
     return res.redirect(302, ok ? '/subscribed/' : '/subscribe-invalid/');
   } catch (err) {
     console.error('Resend request error', err);

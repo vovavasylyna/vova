@@ -41,6 +41,10 @@ outputs:
   home:
     - HTML
     - RSS
+  # /posts/index.json — machine-readable feed the newsletter cron job reads.
+  section:
+    - HTML
+    - JSON
 
 outputFormats:
   RSS:

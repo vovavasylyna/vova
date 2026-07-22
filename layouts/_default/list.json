@@ -1,0 +1,13 @@
+{{- /* Machine-readable post feed consumed by api/cron-broadcast.js.
+       Only the newest posts are included — the cron job never needs the archive. */ -}}
+{{- $items := slice -}}
+{{- range first 10 .Pages.ByDate.Reverse -}}
+  {{- $items = $items | append (dict
+        "title" .Title
+        "url" .Permalink
+        "date" (.Date.Format "2006-01-02")
+        "summary" (.Summary | plainify)
+        "content" .Content
+      ) -}}
+{{- end -}}
+{{- $items | jsonify -}}
