@@ -107,7 +107,7 @@ module.exports = async (req, res) => {
     return reply(500, { error: 'The newsletter is not configured yet.' }, '/subscribe-invalid/');
   }
 
-  const confirmUrl = `${SITE_URL}/api/confirm?token=${encodeURIComponent(signToken(email))}`;
+  const confirmUrl = `${originFrom(req)}/api/confirm?token=${encodeURIComponent(signToken(email))}`;
   const { html, text } = confirmationEmail(confirmUrl);
 
   try {
