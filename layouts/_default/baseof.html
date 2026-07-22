@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
 
   {{- /* Title */ -}}
   {{- $siteTitle := .Site.Title -}}
@@ -101,10 +101,8 @@
   </main>
   <footer>
     <small>
-      Subscribe via <a href="/subscribe/" data-newsletter-open>email newsletter</a>,
-      <a href="/posts/rss">RSS</a>,
-      <a href="https://t.me/vovavasylynablog">Telegram</a>.
-      Say hello via <a href="mailto:vasilinavova@gmail.com">email</a>.
+      <span class="footer-line">Subscribe via <a href="/subscribe/" data-newsletter-open>email newsletter</a>, <a href="/posts/rss">RSS</a>, <a href="https://t.me/vovavasylynablog">Telegram</a>.</span>
+      <span class="footer-line">Say hello via <a href="mailto:vasilinavova@gmail.com">email</a>.</span>
     </small>
   </footer>
   {{ partial "newsletter-dialog.html" . }}

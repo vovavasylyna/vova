@@ -7,17 +7,6 @@
   --border: #ccc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #141414;
-    --bg-alt: #1c1c1c;
-    --text: #fff;
-    --text-emph: #fff;
-    --link: #8ab4ff;
-    --border: #444;
-  }
-}
-
 * { box-sizing: border-box; }
 
 pre { overflow: scroll; }
@@ -62,6 +51,13 @@ footer {
   border-top: 1px solid var(--border);
   padding: 0.5rem 1.2rem;
   text-align: right;
+}
+
+/* On narrow screens each footer sentence gets its own line, with a blank
+   line between them. Wider screens keep them inline on a single line. */
+@media (max-width: 600px) {
+  .footer-line { display: block; }
+  .footer-line + .footer-line { margin-top: 1.2em; }
 }
 
 h1, h2, h3, h4, h5, h6 {
