@@ -84,9 +84,22 @@ module.exports = async (req, res) => {
     const pending = eligible.filter((p) => !existing.has(`post:${slugFromUrl(p.url)}`));
 
     if (dryRun) {
+      const newest = posts[0];
       return res.status(200).json({
         dryRun: true,
         reason: BROADCAST_SINCE ? 'requested via ?dry=1' : 'BROADCAST_SINCE is not set',
+        autosend,
+        broadcastSince: BROADCAST_SINCE || null,
+        // Why nothing is pending is otherwise invisible, so spell out each filter.
+        postsInFeed: posts.length,
+        newestPost: newest ? { title: newest.title, date: newest.date } : null,
+        passedDateFilter: eligible.length,
+        skippedAsOlderThanSince: eligible.length === 0 && posts.length > 0
+          ? `every post predates BROADCAST_SINCE (${BROADCAST_SINCE}) — only posts published from that date on are ever sent`
+          : undefined,
+        alreadyBroadcast: eligible
+          .filter((p) => existing.has(`post:${slugFromUrl(p.url)}`))
+          .map((p) => `post:${slugFromUrl(p.url)}`),
         wouldCreate: pending.map((p) => ({ name: `post:${slugFromUrl(p.url)}`, title: p.title, date: p.date })),
       });
     }
