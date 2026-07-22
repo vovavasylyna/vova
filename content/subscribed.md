@@ -1,6 +1,5 @@
 ---
 title: "You're subscribed"
-newsletter: false
 noindex: true
 sitemap:
   disable: true

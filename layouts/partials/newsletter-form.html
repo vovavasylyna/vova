@@ -1,0 +1,9 @@
+{{- $id := .id | default "newsletter" -}}
+<form class="newsletter-form" method="post" action="/api/subscribe">
+  <label class="visually-hidden" for="{{ $id }}-email">Email address</label>
+  <input id="{{ $id }}-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email" spellcheck="false">
+  {{/* Honeypot: hidden from people, bots tend to fill every field. Server rejects if set. */}}
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button type="submit">Subscribe</button>
+</form>
+<p class="newsletter-msg" role="status" aria-live="polite"></p>

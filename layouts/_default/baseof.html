@@ -96,14 +96,17 @@
   </header>
   <main>
     {{ block "main" . }}{{ end }}
-    {{ if ne .Params.newsletter false }}{{ partial "newsletter.html" . }}{{ end }}
+    {{/* Inline form, only on /subscribe/ — the no-JS fallback for the footer link. */}}
+    {{ if .Params.newsletter }}{{ partial "newsletter-form.html" (dict "id" "newsletter-page") }}{{ end }}
   </main>
   <footer>
     <small>
-      Subscribe via <a href="/posts/rss">RSS</a>,
-      <a href="https://t.me/vovavasylynablog">Telegram</a>
-      or say hello via <a href="mailto:vasilinavova@gmail.com">email</a>.
+      Subscribe via <a href="/subscribe/" data-newsletter-open>email newsletter</a>,
+      <a href="/posts/rss">RSS</a>,
+      <a href="https://t.me/vovavasylynablog">Telegram</a>.
+      Say hello via <a href="mailto:vasilinavova@gmail.com">email</a>.
     </small>
   </footer>
+  {{ partial "newsletter-dialog.html" . }}
 </body>
 </html>

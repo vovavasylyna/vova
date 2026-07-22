@@ -1,0 +1,71 @@
+<dialog id="newsletter-dialog" class="newsletter-dialog" aria-labelledby="newsletter-dialog-title">
+  <form method="dialog" class="newsletter-dismiss">
+    <button type="submit" aria-label="Close">&times;</button>
+  </form>
+
+  <div data-step="form">
+    <h2 id="newsletter-dialog-title">Email newsletter</h2>
+    <p class="newsletter-lead">New posts in your inbox, now and then. No spam — unsubscribe anytime.</p>
+    {{ partial "newsletter-form.html" (dict "id" "newsletter-dialog") }}
+  </div>
+
+  <div data-step="done" hidden>
+    <h2>One more step</h2>
+    <p>I've sent a confirmation link to <strong data-sent-to></strong>.</p>
+    <p class="newsletter-emph">Open that email and click <strong>&ldquo;Confirm subscription&rdquo;</strong> to finish. Until you do, you are <em>not</em> subscribed yet.</p>
+    <p class="newsletter-hint">The link expires in 24 hours. Can't find it? Check your spam folder.</p>
+    <form method="dialog"><button type="submit">Got it</button></form>
+  </div>
+</dialog>
+<script>
+  (function () {
+    var dialog = document.getElementById('newsletter-dialog');
+    // No <dialog> support → leave the link alone so it navigates to /subscribe/.
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+
+    var stepForm = dialog.querySelector('[data-step="form"]');
+    var stepDone = dialog.querySelector('[data-step="done"]');
+    var form = stepForm.querySelector('.newsletter-form');
+    var msg = stepForm.querySelector('.newsletter-msg');
+    var sentTo = stepDone.querySelector('[data-sent-to]');
+    var input = form.querySelector('input[name="email"]');
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-newsletter-open]'), function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        stepForm.hidden = false;
+        stepDone.hidden = true;
+        msg.textContent = '';
+        dialog.showModal();
+        input.focus();
+      });
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var button = form.querySelector('button[type="submit"]');
+      var email = input.value;
+      button.disabled = true;
+      msg.textContent = 'Sending…';
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (res.ok) {
+            sentTo.textContent = email;
+            form.reset();
+            msg.textContent = '';
+            stepForm.hidden = true;
+            stepDone.hidden = false;
+          } else {
+            msg.textContent = (res.data && res.data.error) || 'Something went wrong. Please try again.';
+          }
+        })
+        .catch(function () { msg.textContent = 'Network error. Please try again.'; })
+        .finally(function () { button.disabled = false; });
+    });
+  })();
+</script>
