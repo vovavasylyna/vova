@@ -79,7 +79,7 @@ All time reading stats
         </tr>
         <tr>
             <td align="left">2026</td>
-            <td align="left">1</td>
+            <td align="left">2</td>
         </tr>
     </tbody>
 </table>
@@ -89,6 +89,7 @@ These are the books I read
 ### 2026
 
 * Аркан вовків – Павло Деревʼянко
+* Мої друзі – Фредрік Бакман
 
 <details>
 <summary>2025</summary>
