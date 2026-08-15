@@ -4,7 +4,7 @@ title: "Volodymyr Vasylyna"
 
 Hi, you've reached my personal corner of the Internet.
 
-I work as an analyst at <a href="https://sap.com">SAP</a> based in Kyiv, Ukraine. 
+I work as an analyst at <a href="https://brdo.com.ua/en/">BRDO</a> based in Kyiv, Ukraine. 
 
 On the side, I'm building <a href="https://www.doradora.cc/en">Dora</a>, a specification and project management tool for architects and interior designers. 
 
