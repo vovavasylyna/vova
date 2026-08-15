@@ -16,16 +16,16 @@ Updated on 2026-04-24.
 
 ## Work Laptop
 
-- MacBook Air 2022 M2
+- MacBook Air 15" M5
 
 ## Devices
 
 - iPhone 17
-- Apple EarPods USB-C
+- AirPods Pro
 
 ## Software
 
 - Safari
-- Databricks, SAP Analytics Cloud, Adobe Analytics
+- Databricks, SAP Analytics Cloud, Adobe Analytics, Excel
 - Visual Studio Code
 
