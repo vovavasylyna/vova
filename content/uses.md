@@ -5,7 +5,7 @@ url: "/uses/"
 
 This page contains a somewhat up-to-date listing of all hardware and software that I currently use. Seeing similar pages on other people’s personal websites have proved quite valuable to me, so I figured I would do the same!
 
-Updated on 2026-04-24.
+Updated on 2026-08-15.
 
 ## Services
 
@@ -26,6 +26,6 @@ Updated on 2026-04-24.
 ## Software
 
 - Safari
-- Databricks, SAP Analytics Cloud, Adobe Analytics, Excel
+- Databricks, Adobe Analytics, Excel
 - Visual Studio Code
 
