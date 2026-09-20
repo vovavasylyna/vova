@@ -79,7 +79,7 @@ All time reading stats
         </tr>
         <tr>
             <td align="left">2026</td>
-            <td align="left">2</td>
+            <td align="left">3</td>
         </tr>
     </tbody>
 </table>
@@ -90,6 +90,7 @@ These are the books I read
 
 * Аркан вовків – Павло Деревʼянко
 * Мої друзі – Фредрік Бакман
+* Ми тебе не чекали – Артем Чех
 
 <details>
 <summary>2025</summary>
