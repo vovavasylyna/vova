@@ -2,8 +2,9 @@
 <html lang="uk">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
   <meta name="robots" content="noindex, nofollow">
   <title>Сімейне дерево</title>
   <meta name="description" content="Сімейне дерево родини Володимира Василини.">
@@ -13,24 +14,29 @@
 </head>
 <body data-root-dative="Володимиру">
   <header>
-    <a class="brand" id="brand" href="#">Сімейне дерево</a>
+    <a class="brand" id="brand" href="#" aria-label="Сімейне дерево — на початок">
+      <svg class="brand-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#111"/><path d="M18 20h28M32 20v24" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="16" cy="20" r="7" fill="#fff"/><circle cx="48" cy="20" r="7" fill="#fff"/><circle cx="32" cy="46" r="7" fill="#fff"/></svg>
+      <span class="brand-text">Сімейне дерево</span>
+    </a>
     <div class="search" role="search">
-      <input id="q" type="search" placeholder="Знайти людину…" autocomplete="off" spellcheck="false"
+      <input id="q" type="search" placeholder="Знайти людину…" autocomplete="off" spellcheck="false" enterkeyhint="search"
              role="combobox" aria-label="Пошук людини за іменем" aria-expanded="false"
              aria-controls="results" aria-autocomplete="list">
       <ul id="results" role="listbox" aria-label="Знайдені люди" hidden></ul>
     </div>
     <nav>
-      <button type="button" class="linklike" id="all-btn">усі люди</button>
-      <a href="https://vasylyna.net">vasylyna.net</a>
+      <button type="button" class="linklike" id="all-btn"><span class="wide">усі люди</span><span class="narrow">Усі</span></button>
+      <a class="home-link" href="https://vasylyna.net">vasylyna.net</a>
     </nav>
   </header>
 
   <main>
     <section id="viewport" aria-label="Дерево">
       <div id="stage"><svg id="links" aria-hidden="true"></svg></div>
-      <div class="focusbar" id="focusbar" hidden></div>
-      <p class="hint" id="hint">Натисніть на людину, щоб побачити її гілку; «+5» на картці — скільки ще людей там відкриється. Дерево можна перетягувати й масштабувати.</p>
+      <p class="hint" id="hint">
+        <span class="hint-mouse">Натисніть на людину, щоб побачити її гілку; «+5» на картці — скільки ще людей там відкриється. Дерево можна перетягувати й масштабувати.</span>
+        <span class="hint-touch">Торкніться людини, щоб відкрити її гілку. «+5» — скільки ще людей за карткою. Двома пальцями — масштаб.</span>
+      </p>
       <div class="controls">
         <button type="button" id="zoom-in" title="Збільшити" aria-label="Збільшити">+</button>
         <button type="button" id="zoom-out" title="Зменшити" aria-label="Зменшити">&minus;</button>
@@ -39,8 +45,14 @@
         </button>
       </div>
     </section>
-    <aside id="panel" aria-live="polite">
-      <p class="muted">Завантаження…</p>
+    <aside id="panel" aria-label="Про людину">
+      <div class="sheet-head" id="sheet-head" role="button" tabindex="0" aria-expanded="false" aria-controls="panel-body">
+        <span class="grabber" aria-hidden="true"></span>
+        <div class="peek" id="peek"></div>
+      </div>
+      <div class="sheet-body" id="panel-body" aria-live="polite">
+        <p class="muted">Завантаження…</p>
+      </div>
     </aside>
   </main>
 
@@ -48,6 +60,7 @@
     <div class="dialog-head">
       <h2 id="people-title">Усі люди</h2>
       <button type="button" class="linklike" id="people-close">закрити</button>
+      <input id="people-filter" type="search" placeholder="Фільтр за іменем чи прізвищем" autocomplete="off" spellcheck="false" aria-label="Фільтр">
     </div>
     <div id="people-list"></div>
   </dialog>

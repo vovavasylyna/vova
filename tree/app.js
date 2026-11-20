@@ -20,7 +20,11 @@
   const stage = $('stage');
   const linksSvg = $('links');
   const panel = $('panel');
-  const focusbar = $('focusbar');
+  const panelBody = $('panel-body');
+  const sheetHead = $('sheet-head');
+  const peek = $('peek');
+  // Phones in portrait get a full-screen chart with details in a bottom sheet.
+  const phone = matchMedia('(max-width: 760px) and (min-height: 480px)');
   const rootDative = document.body.dataset.rootDative || '';
 
   const people = new Map();
@@ -610,17 +614,23 @@
     applyView(animate);
   }
 
-  function zoomBy(factor) {
+  // The part of the chart not covered by the bottom sheet on phones.
+  function visibleChart() {
     const r = viewport.getBoundingClientRect();
+    return { width: r.width, height: Math.max(120, r.height - (phone.matches ? sheet.visible() : 0)) };
+  }
+
+  function zoomBy(factor) {
+    const r = visibleChart();
     zoomAt(r.width / 2, r.height / 2, view.k * factor, true);
   }
 
   // Frame the layout: show as much of it as possible while keeping the
   // focus person on screen. `fit` also picks a zoom level.
   function frame(lay, { animate = false, fit = false, minK = 0.45 } = {}) {
-    const r = viewport.getBoundingClientRect();
+    const r = visibleChart();
     const b = lay.bounds;
-    const pad = 32;
+    const pad = phone.matches ? 20 : 32;
     if (fit) {
       const k = Math.min((r.width - pad * 2) / (b.maxX - b.minX), (r.height - pad * 2) / (b.maxY - b.minY));
       view.k = clamp(k, minK, 1);
@@ -634,6 +644,103 @@
     view.x = r.width / 2 - cx * view.k;
     view.y = r.height / 2 - cy * view.k;
     applyView(animate);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Bottom sheet (phones): peek shows who is in focus, half and full show
+  // the details. Drag the header to resize, tap it to open or close.
+
+  const sheet = {
+    state: 'peek',
+    offset: 0, // current translateY in px
+    heights() {
+      const total = panel.offsetHeight;
+      const safe = parseFloat(getComputedStyle(panel).paddingBottom) || 0;
+      const peekH = Math.min(total, sheetHead.offsetHeight + safe);
+      const halfH = clamp(Math.round(window.innerHeight * 0.5), peekH + 80, total);
+      return { total, peek: peekH, half: halfH, full: total };
+    },
+    visible() {
+      return this.heights()[this.state] ?? 0;
+    },
+    place(offset, animate) {
+      this.offset = offset;
+      panel.classList.toggle('animate', !!animate);
+      panel.style.transform = `translateY(${offset}px)`;
+    },
+    set(state, { animate = true, reframe = true } = {}) {
+      if (!phone.matches) return;
+      const h = this.heights();
+      this.state = state;
+      this.place(h.total - h[state], animate);
+      panel.dataset.state = state;
+      sheetHead.setAttribute('aria-expanded', String(state !== 'peek'));
+      if (reframe && state !== 'full' && currentLayout) frame(currentLayout, { animate: true });
+    },
+  };
+
+  function initSheet() {
+    let drag = null;
+    sheetHead.addEventListener('pointerdown', (e) => {
+      if (!phone.matches || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      sheetHead.setPointerCapture(e.pointerId);
+      drag = { id: e.pointerId, y0: e.clientY, off0: sheet.offset, moved: false, last: [{ y: e.clientY, t: e.timeStamp }] };
+    });
+    sheetHead.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dy = e.clientY - drag.y0;
+      if (!drag.moved && Math.abs(dy) < 6) return;
+      drag.moved = true;
+      const h = sheet.heights();
+      sheet.place(clamp(drag.off0 + dy, 0, h.total - h.peek), false);
+      drag.last.push({ y: e.clientY, t: e.timeStamp });
+      if (drag.last.length > 5) drag.last.shift();
+    });
+    const end = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag;
+      drag = null;
+      if (!d.moved) {
+        sheet.set(sheet.state === 'peek' ? 'half' : 'peek');
+        return;
+      }
+      hideHint();
+      const h = sheet.heights();
+      const shown = h.total - sheet.offset;
+      const first = d.last[0];
+      const lastPt = d.last[d.last.length - 1];
+      const velocity = (lastPt.y - first.y) / Math.max(1, lastPt.t - first.t); // px/ms, + is down
+      const order = ['peek', 'half', 'full'];
+      let target = order.reduce((best, s) => (Math.abs(h[s] - shown) < Math.abs(h[best] - shown) ? s : best), 'peek');
+      if (Math.abs(velocity) > 0.4) {
+        const up = order.filter((s) => h[s] > shown + 1);
+        const down = order.filter((s) => h[s] < shown - 1);
+        target = velocity < 0 ? up[0] || 'full' : down[down.length - 1] || 'peek';
+      }
+      sheet.set(target);
+    };
+    sheetHead.addEventListener('pointerup', end);
+    sheetHead.addEventListener('pointercancel', end);
+    sheetHead.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        sheet.set(sheet.state === 'peek' ? 'half' : 'peek');
+      }
+    });
+
+    const sync = () => {
+      if (phone.matches) sheet.set(sheet.state, { animate: false, reframe: false });
+      else {
+        panel.style.transform = '';
+        panel.classList.remove('animate');
+      }
+    };
+    phone.addEventListener('change', () => {
+      sync();
+      if (currentLayout) frame(currentLayout, { fit: true, minK: phone.matches ? 0.8 : 0.7 });
+    });
+    window.addEventListener('resize', sync);
+    sync();
   }
 
   const pointers = new Map();
@@ -658,7 +765,23 @@
     }
   }
 
+  // Double tap (or double click) on empty space zooms in there.
+  let lastTap = null;
+  function checkDoubleTap(e) {
+    if (e.target.closest('.card, .controls')) return;
+    const now = e.timeStamp;
+    if (lastTap && now - lastTap.t < 350 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30) {
+      const r = viewport.getBoundingClientRect();
+      zoomAt(e.clientX - r.left, e.clientY - r.top, view.k * 1.6, true);
+      hideHint();
+      lastTap = null;
+    } else lastTap = { t: now, x: e.clientX, y: e.clientY };
+  }
+
   function endPointer(e) {
+    if (gesture?.type === 'pan' && !gesture.moved && pointers.size === 1 && pointers.has(e.pointerId) && e.type === 'pointerup') {
+      checkDoubleTap(e);
+    }
     if (!pointers.delete(e.pointerId)) return;
     if (pointers.size) startGesture();
     else {
@@ -670,7 +793,7 @@
   function initPanZoom() {
     viewport.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      if (e.target.closest('.controls, .focusbar')) return;
+      if (e.target.closest('.controls')) return;
       if (pointers.size === 0) suppressClick = false;
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       startGesture();
@@ -809,14 +932,15 @@
     html += `<footer>
       <p>${plural(people.size, 'людина', 'людини', 'людей')} · ${plural(meta.generations, 'покоління', 'покоління', 'поколінь')} · з ${meta.firstYear} року.</p>
       ${meta.privateAfter ? `<p>Для живих людей, народжених після ${meta.privateAfter} року, показано лише рік народження.</p>` : ''}
-      <p>Оновлено ${esc(meta.updated)}.</p>
+      <p>Оновлено ${esc(meta.updated)}. <a href="https://vasylyna.net">vasylyna.net</a></p>
     </footer>`;
-    panel.innerHTML = html;
+    panelBody.innerHTML = html;
+    panelBody.scrollTop = 0;
     panel.scrollTop = 0;
 
-    focusbar.innerHTML = `<strong>${esc(fullName(p))}</strong>${rel ? ` · ${esc(rel)}` : ''} <button type="button" class="linklike" id="to-panel">деталі ↓</button>`;
-    focusbar.hidden = false;
-    $('to-panel').addEventListener('click', () => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    // The bottom sheet's always-visible header on phones.
+    const sub = [lifespan(p), rel].filter(Boolean).join(' · ');
+    peek.innerHTML = `<strong>${esc(fullName(p))}</strong><span>${sub ? esc(sub) : '&nbsp;'}</span>`;
   }
 
   // ---------------------------------------------------------------------------
@@ -929,11 +1053,41 @@
           .get(k)
           .sort((a, b) => (a.g || 'я').localeCompare(b.g || 'я', 'uk') || (yearOf(a) || 0) - (yearOf(b) || 0));
         return `<section><h3>${k ? esc(k) : 'Без прізвища'} <span class="muted">${list.length}</span></h3><ul>${list
-          .map((p) => `<li><a href="#${esc(p.id)}">${esc(p.g || UNKNOWN)}</a>${lifespan(p) ? ` <span class="year">${esc(lifespan(p))}</span>` : ''}</li>`)
+          .map(
+            (p) =>
+              `<li data-name="${esc(norm(`${fullName(p)} ${p.m || ''}`))}"><a href="#${esc(p.id)}">${esc(p.g || UNKNOWN)}</a>${
+                lifespan(p) ? ` <span class="year">${esc(lifespan(p))}</span>` : ''
+              }</li>`,
+          )
           .join('')}</ul></section>`;
       })
       .join('');
-    $('all-btn').addEventListener('click', () => dialog.showModal());
+    $('people-list').insertAdjacentHTML('beforeend', '<p class="muted empty" hidden>Нікого не знайдено.</p>');
+
+    const filter = $('people-filter');
+    filter.addEventListener('input', () => {
+      const tokens = norm(filter.value).split(/\s+/).filter(Boolean);
+      let any = false;
+      for (const sec of $('people-list').querySelectorAll('section')) {
+        let shown = 0;
+        for (const li of sec.querySelectorAll('li')) {
+          const ok = tokens.every((t) => li.dataset.name.includes(t));
+          li.hidden = !ok;
+          if (ok) shown++;
+        }
+        sec.hidden = !shown;
+        any = any || shown > 0;
+      }
+      $('people-list').querySelector('.empty').hidden = any;
+    });
+    $('all-btn').addEventListener('click', () => {
+      filter.value = '';
+      filter.dispatchEvent(new Event('input'));
+      dialog.showModal();
+      $('people-list').scrollTop = 0;
+      dialog.scrollTop = 0;
+      if (!phone.matches) filter.focus();
+    });
     $('people-close').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog || e.target.closest('a')) dialog.close();
@@ -950,9 +1104,11 @@
 
   function show(id, animate) {
     focusId = id;
-    currentLayout = render(id, animate);
-    frame(currentLayout, { animate, fit: !animate, minK: 0.7 });
     renderPanel(id);
+    sheet.set(sheet.state, { animate: false, reframe: false }); // the peek's height may have changed
+    currentLayout = render(id, animate);
+    // Phones start closer in, so names stay readable; the rest is a swipe away.
+    frame(currentLayout, { animate, fit: !animate, minK: phone.matches ? 0.8 : 0.7 });
     const p = person(id);
     document.title = id === rootId ? 'Сімейне дерево' : `${fullName(p)} — Сімейне дерево`;
   }
@@ -981,6 +1137,7 @@
 
     $('brand').href = `#${rootId}`;
     initPanZoom();
+    initSheet();
     initSearch();
     initPeopleDialog();
     show(idFromHash(), false);
@@ -1001,6 +1158,6 @@
     .then(init)
     .catch((err) => {
       console.error(err);
-      panel.innerHTML = '<p>Не вдалося завантажити дерево. Спробуйте оновити сторінку.</p>';
+      panelBody.innerHTML = '<p>Не вдалося завантажити дерево. Спробуйте оновити сторінку.</p>';
     });
 })();
