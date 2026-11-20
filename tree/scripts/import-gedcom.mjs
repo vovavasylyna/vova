@@ -18,7 +18,7 @@
 // last PRIVATE_YEARS years or with no birth date) only the birth year is kept;
 // exact dates and places are dropped. Pass --full-dates to keep everything.
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -270,10 +270,13 @@ function mergeTree(base, extra, prefix, log) {
   // Merge details of matched people.
   for (const [eid, bid] of match) mergePerson(base.people.get(bid), extra.people.get(eid), log);
 
-  // Everyone else from the extra tree is new.
+  // Everyone else from the extra tree is new. Without a prefix (hand-written
+  // additions) the file's own ids are kept, so they must not clash.
+  const newId = (id, fam) => (prefix ? `${prefix}${fam ? 'F' : ''}${id.replace(/^\D+/, '')}` : id);
   for (const [eid, q] of extra.people) {
     if (match.has(eid)) continue;
-    const nid = prefix + eid.replace(/^\D+/, '');
+    const nid = newId(eid, false);
+    if (base.people.has(nid)) throw new Error(`Person id ${nid} is already taken in the tree`);
     match.set(eid, nid);
     base.people.set(nid, { ...q, id: nid, c: null, f: [] });
     log.added.push(nid);
@@ -283,7 +286,8 @@ function mergeTree(base, extra, prefix, log) {
   for (const [fid, fb] of extra.families) {
     let fa = famMap.has(fid) && base.families.get(famMap.get(fid));
     if (!fa) {
-      fa = { id: `${prefix}F${fid.replace(/^\D+/, '')}`, h: null, w: null, k: [], md: '', mp: '', dv: false };
+      fa = { id: newId(fid, true), h: null, w: null, k: [], md: '', mp: '', dv: false };
+      if (base.families.has(fa.id)) throw new Error(`Family id ${fa.id} is already taken in the tree`);
       base.families.set(fa.id, fa);
     }
     fa.md = pickDate(fa.md, fb.md, log, `дата шлюбу (${fa.id})`);
@@ -361,9 +365,16 @@ if (!tree.people.has(ROOT)) {
   console.error(`Root person ${ROOT} not found in ${inputs[0]}`);
   process.exit(1);
 }
-merges.forEach((path, i) => {
+// Hand-written additions in tree/additions/*.ged (what relatives told us that
+// isn't in MyHeritage yet) are merged after the exports, every time. Once the
+// same people are in MyHeritage, they simply match and nothing is duplicated.
+const additionsDir = join(dirname(output), 'additions');
+const additions = existsSync(additionsDir)
+  ? readdirSync(additionsDir).filter((f) => f.endsWith('.ged')).sort().map((f) => join(additionsDir, f))
+  : [];
+[...merges.map((path, i) => [path, MERGE_PREFIXES[i]]), ...additions.map((path) => [path, ''])].forEach(([path, prefix]) => {
   const log = { matched: [], filled: [], spelling: [], conflicts: [], added: [] };
-  mergeTree(tree, readTree(path), MERGE_PREFIXES[i], log);
+  mergeTree(tree, readTree(path), prefix, log);
   const added = log.added.map((id) => nameOf(tree.people.get(id)));
   console.log(`\nMerged ${path}`);
   console.log(`  matched ${log.matched.length}:\n    ${log.matched.join('\n    ')}`);

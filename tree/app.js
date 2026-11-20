@@ -72,7 +72,9 @@
     if (!d) return '';
     if (d.includes('..')) {
       const [a, b] = d.split('..');
-      return short ? `${fmtDate(a, true)}–${fmtDate(b, true)}` : `між ${fmtDate(a)} і ${fmtDate(b)}`;
+      // "BET 1920 AND 1929" is a decade, not a lifespan.
+      if (/^\d{3}0$/.test(a) && Number(b) === Number(a) + 9) return short ? `${a}-ті` : `${a}-ті роки`;
+      return `між ${fmtDate(a, short)} і ${fmtDate(b, short)}`;
     }
     const q = QUAL[d[0]] || '';
     if (q) d = d.slice(1);
@@ -115,14 +117,20 @@
   // ---------------------------------------------------------------------------
   // Kinship: how each person is related to the root person, in Ukrainian.
 
+  // Ancestors with their distance in generations. The birth family itself also
+  // counts as an ancestor, so siblings whose parents are unknown still relate.
   function ancestorDistances(id) {
     const dist = new Map([[id, 0]]);
     const queue = [id];
     while (queue.length) {
       const x = queue.shift();
+      const fam = birthFamily(x);
+      if (!fam) continue;
+      const d = dist.get(x) + 1;
+      if (!dist.has(`fam:${fam.id}`)) dist.set(`fam:${fam.id}`, d);
       for (const p of parentsOf(x)) {
         if (!dist.has(p)) {
-          dist.set(p, dist.get(x) + 1);
+          dist.set(p, d);
           queue.push(p);
         }
       }
@@ -400,6 +408,8 @@
       const kids = l.d === 0 && sibX.length ? [...sibX, ...l.kids] : l.kids;
       links.push({ row: -(l.d + 1), px: l.px, kids });
     }
+    // Siblings with unknown parents still get a bracket joining them.
+    if (sibX.length && !up.links.some((l) => l.d === 0)) links.push({ row: -1, px: [], kids: [...sibX, 0] });
     for (const l of down.links) links.push({ row: l.d, px: l.px, kids: l.kids, bus: l.bus });
 
     // Ancestors of the focus person's spouses go above them, beside the focus
@@ -443,6 +453,11 @@
     const bus = bottom + (ROW - CARD_H) / 2 + busShift;
     const kidTop = (row + 1) * ROW;
     const p = [...px].sort((a, b) => a - b);
+    if (!p.length) {
+      let d = `M${Math.min(...kids)} ${bus}H${Math.max(...kids)}`;
+      for (const k of kids) d += `M${k} ${bus}V${kidTop}`;
+      return d;
+    }
     let d = '';
     if (p.length === 2) d += `M${p[0] + CARD_W / 2} ${mid}H${p[1] - CARD_W / 2}`;
     if (!kids.length) return d;

@@ -19,6 +19,14 @@ and `data.json` are served as they are, from the `tree` Vercel project.
    precise date wins; on a tie, the merged tree wins.
 3. Commit `tree/data.json` and push to `main`.
 
+What relatives told us that isn't in MyHeritage yet goes into hand-written
+GEDCOM files in `tree/additions/` (committed, unlike the exports, so keep them
+to names and years). They are merged after the exports on every import and
+keep their own ids (`V1`, `VF2`…). Each needs at least one person who is
+already in the tree with the same name and birth year, so it can be anchored;
+once the same people are entered in MyHeritage they just match and nothing
+is duplicated.
+
 Fixes that aren't in MyHeritage yet live in `tree/corrections.json`: pairs of
 duplicates to fold into one person (`keep` takes over everything `drop` had)
 and people to remove. They are applied on every import; once a fix is also

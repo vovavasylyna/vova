@@ -1,0 +1,71 @@
+0 HEAD
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 NOTE Зі слів Вячеслава Василини, листопад 2026. Цього ще немає в MyHeritage.
+2 CONT Вік доньок Петра (76 і 73 роки) переведено в приблизні роки народження.
+0 @V1@ INDI
+1 NAME Вячеслав /Василина/
+1 SEX M
+1 BIRT
+2 DATE 1965
+1 FAMC @VF1@
+0 @V2@ INDI
+1 NAME Володимир /Василина/
+1 SEX M
+1 BIRT
+2 DATE 1934
+1 FAMS @VF1@
+1 FAMC @VF2@
+0 @V3@ INDI
+1 NAME Євдокія /Синяговська/
+1 SEX F
+1 BIRT
+2 DATE 1938
+1 FAMS @VF1@
+0 @V4@ INDI
+1 NAME Петро /Василина/
+1 SEX M
+1 BIRT
+2 DATE 1929
+1 FAMC @VF2@
+1 FAMS @VF3@
+0 @V5@ INDI
+1 NAME Марфа /Василина/
+1 SEX F
+1 BIRT
+2 DATE BET 1920 AND 1929
+1 FAMC @VF2@
+0 @V6@ INDI
+1 NAME Марія /Василина/
+1 SEX F
+1 BIRT
+2 DATE BET 1920 AND 1929
+1 FAMC @VF2@
+0 @V7@ INDI
+1 NAME Любов /Василина/
+1 SEX F
+1 BIRT
+2 DATE ABT 1950
+1 FAMC @VF3@
+0 @V8@ INDI
+1 NAME Ольга /Василина/
+1 SEX F
+1 BIRT
+2 DATE ABT 1953
+1 FAMC @VF3@
+0 @VF1@ FAM
+1 HUSB @V2@
+1 WIFE @V3@
+1 CHIL @V1@
+0 @VF2@ FAM
+1 CHIL @V5@
+1 CHIL @V6@
+1 CHIL @V4@
+1 CHIL @V2@
+0 @VF3@ FAM
+1 HUSB @V4@
+1 CHIL @V7@
+1 CHIL @V8@
+0 TRLR
