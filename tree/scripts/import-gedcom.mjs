@@ -18,7 +18,7 @@
 // last PRIVATE_YEARS years or with no birth date) only the birth year is kept;
 // exact dates and places are dropped. Pass --full-dates to keep everything.
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -372,6 +372,49 @@ merges.forEach((path, i) => {
   console.log(`  conflicts ${log.conflicts.length}:\n    ${log.conflicts.join('\n    ')}`);
   console.log(`  added ${added.length}:\n    ${added.join('\n    ')}`);
 });
+
+// Hand-made fixes from tree/corrections.json: duplicates to fold into one
+// person and people to remove. Ids that no longer exist (because the fix was
+// also made in MyHeritage) are skipped with a note.
+const correctionsPath = join(dirname(output), 'corrections.json');
+if (existsSync(correctionsPath)) {
+  const corrections = JSON.parse(readFileSync(correctionsPath, 'utf8'));
+  const replace = (from, to) => {
+    for (const f of tree.families.values()) {
+      if (f.h === from) f.h = to;
+      if (f.w === from) f.w = to;
+      f.k = [...new Set(f.k.map((k) => (k === from ? to : k)))];
+    }
+  };
+  const log = { conflicts: [], filled: [], spelling: [] };
+  console.log('\nCorrections');
+  for (const { keep, drop } of corrections.duplicates || []) {
+    const a = tree.people.get(keep);
+    const b = tree.people.get(drop);
+    if (!a || !b) {
+      console.log(`  skipped duplicate ${drop} → ${keep}: not in the tree`);
+      continue;
+    }
+    mergePerson(a, b, log);
+    a.c = a.c || b.c;
+    a.f = [...new Set([...a.f, ...b.f])];
+    replace(drop, keep);
+    tree.people.delete(drop);
+    console.log(`  merged duplicate ${drop} into ${keep} (${nameOf(a)})`);
+  }
+  for (const { id } of corrections.remove || []) {
+    const p = tree.people.get(id);
+    if (!p) {
+      console.log(`  skipped removal of ${id}: not in the tree`);
+      continue;
+    }
+    replace(id, null);
+    for (const f of tree.families.values()) f.k = f.k.filter(Boolean);
+    tree.people.delete(id);
+    console.log(`  removed ${id} (${nameOf(p)})`);
+  }
+  for (const line of [...log.conflicts, ...log.spelling]) console.log(`  note: ${line}`);
+}
 
 // Drop anyone the merge left unconnected to the root.
 const reach = new Set([ROOT]);
