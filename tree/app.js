@@ -82,11 +82,23 @@
   }
 
   const UNKNOWN = 'Ім’я невідоме';
+  // Birth surname, or the married one when that is all we know.
+  const surnameOf = (p) => p.s || p.m || '';
   function fullName(p) {
-    if (p.g && p.s) return `${p.g} ${p.s}`;
+    const s = surnameOf(p);
+    if (p.g && s) return `${p.g} ${s}`;
     if (p.g) return p.g;
-    if (p.s) return `${p.s} (ім’я невідоме)`;
+    if (s) return `${s} (ім’я невідоме)`;
     return UNKNOWN;
+  }
+
+  // "1945–2025", "1917–†", "† 2009", "1994".
+  function lifespan(p) {
+    const b = fmtDate(p.b, true);
+    const d = fmtDate(p.d, true);
+    if (!p.z) return b;
+    if (b) return `${b}–${d || '†'}`;
+    return d ? `† ${d}` : '†';
   }
 
   function plural(n, one, few, many) {
@@ -431,13 +443,13 @@
     }
     const surname = document.createElement('span');
     surname.className = 'surname';
-    surname.textContent = p.s || '';
+    surname.textContent = surnameOf(p);
     const year = document.createElement('span');
     year.className = 'year';
-    year.textContent = fmtDate(p.b, true);
+    year.textContent = lifespan(p);
     a.append(given, surname, year);
     const rel = relations.get(id);
-    const label = [fullName(p), fmtDate(p.b, true), rel].filter(Boolean).join(', ');
+    const label = [fullName(p), lifespan(p), rel].filter(Boolean).join(', ');
     a.title = label;
     a.setAttribute('aria-label', label);
     return a;
@@ -656,13 +668,23 @@
   // ---------------------------------------------------------------------------
   // Side panel
 
-  function personItem(id) {
+  function personItem(id, note = '') {
     const p = person(id);
-    return `<li><a href="#${esc(id)}">${esc(fullName(p))}</a>${p.b ? `<span class="year">${esc(fmtDate(p.b, true))}</span>` : ''}</li>`;
+    const years = lifespan(p);
+    return `<li><a href="#${esc(id)}">${esc(fullName(p))}</a>${years ? `<span class="year">${esc(years)}</span>` : ''}${
+      note ? `<span class="note">${esc(note)}</span>` : ''
+    }</li>`;
   }
 
-  function section(title, ids) {
-    return ids.length ? `<h2>${title}</h2><ul>${ids.map(personItem).join('')}</ul>` : '';
+  function section(title, ids, notes = []) {
+    return ids.length ? `<h2>${title}</h2><ul>${ids.map((id, i) => personItem(id, notes[i])).join('')}</ul>` : '';
+  }
+
+  function marriageNote(fam) {
+    const parts = [];
+    if (fam.md || fam.mp) parts.push(['шлюб', fmtDate(fam.md), fam.mp].filter(Boolean).join(' '));
+    if (fam.dv) parts.push('розлучені');
+    return parts.join(', ');
   }
 
   function renderPanel(id) {
@@ -674,14 +696,26 @@
     let html = `<h1>${esc(fullName(p))}</h1>`;
     if (rel) html += `<p class="rel">${esc(rootDative ? `Ким доводиться ${rootDative}: ` : '')}<strong>${esc(rel)}</strong></p>`;
 
+    const fact = (label, value) => `<p class="fact"><span class="muted">${label}:</span> ${value}</p>`;
     const birth = [fmtDate(p.b), p.p].filter(Boolean).join(', ');
-    html += `<p class="birth"><span class="muted">Народження:</span> ${birth ? esc(birth) : '<span class="muted">невідомо</span>'}</p>`;
+    html += fact('Народження', birth ? esc(birth) : '<span class="muted">невідомо</span>');
+    if (p.z) {
+      const death = [fmtDate(p.d), p.dp].filter(Boolean).join(', ');
+      html += fact('Смерть', death ? esc(death) : '<span class="muted">дата невідома</span>');
+    }
+    if (p.bu) html += fact('Поховання', esc(p.bu));
+    if (p.m && p.s) html += fact('Прізвище в шлюбі', esc(p.m));
 
     html += section('Батьки', parentsOf(id));
     html += section('Брати й сестри', full);
     html += section('Брати й сестри по одному з батьків', half);
-    const spouses = spousesOf(id);
-    html += section(female ? (spouses.length > 1 ? 'Чоловіки' : 'Чоловік') : spouses.length > 1 ? 'Дружини' : 'Дружина', spouses);
+    const marriages = fams.filter((f) => spouseIn(f, id));
+    const spouses = marriages.map((f) => spouseIn(f, id));
+    html += section(
+      female ? (spouses.length > 1 ? 'Чоловіки' : 'Чоловік') : spouses.length > 1 ? 'Дружини' : 'Дружина',
+      spouses,
+      marriages.map(marriageNote),
+    );
     const withKids = fams.filter((f) => f.k.length);
     for (const f of withKids) {
       const other = spouseIn(f, id);
@@ -692,7 +726,7 @@
 
     html += `<footer>
       <p>${plural(people.size, 'людина', 'людини', 'людей')} · ${plural(meta.generations, 'покоління', 'покоління', 'поколінь')} · з ${meta.firstYear} року.</p>
-      ${meta.privateAfter ? `<p>Для народжених після ${meta.privateAfter} року показано лише рік народження.</p>` : ''}
+      ${meta.privateAfter ? `<p>Для живих людей, народжених після ${meta.privateAfter} року, показано лише рік народження.</p>` : ''}
       <p>Оновлено ${esc(meta.updated)}.</p>
     </footer>`;
     panel.innerHTML = html;
@@ -714,7 +748,12 @@
   function initSearch() {
     const input = $('q');
     const list = $('results');
-    searchIndex = [...people.values()].map((p) => ({ id: p.id, name: norm(fullName(p)), given: norm(p.g || ''), surname: norm(p.s || '') }));
+    searchIndex = [...people.values()].map((p) => ({
+      id: p.id,
+      name: norm(`${fullName(p)} ${p.m || ''}`),
+      given: norm(p.g || ''),
+      surname: norm(`${p.s || ''} ${p.m || ''}`),
+    }));
 
     const close = () => {
       list.hidden = true;
@@ -733,7 +772,7 @@
         ? results
             .map((id, i) => {
               const p = person(id);
-              const sub = [fmtDate(p.b, true), relations.get(id)].filter(Boolean).join(' · ');
+              const sub = [lifespan(p), relations.get(id)].filter(Boolean).join(' · ');
               return `<li role="option" id="opt-${i}" aria-selected="${i === active}"><a href="#${esc(id)}" tabindex="-1">${esc(fullName(p))}${sub ? `<span class="muted">${esc(sub)}</span>` : ''}</a></li>`;
             })
             .join('')
@@ -796,7 +835,7 @@
     const dialog = $('people');
     const groups = new Map();
     for (const p of people.values()) {
-      const key = p.s || '';
+      const key = surnameOf(p);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(p);
     }
@@ -808,7 +847,7 @@
           .get(k)
           .sort((a, b) => (a.g || 'я').localeCompare(b.g || 'я', 'uk') || (yearOf(a) || 0) - (yearOf(b) || 0));
         return `<section><h3>${k ? esc(k) : 'Без прізвища'} <span class="muted">${list.length}</span></h3><ul>${list
-          .map((p) => `<li><a href="#${esc(p.id)}">${esc(p.g || UNKNOWN)}</a>${p.b ? ` <span class="year">${esc(fmtDate(p.b, true))}</span>` : ''}</li>`)
+          .map((p) => `<li><a href="#${esc(p.id)}">${esc(p.g || UNKNOWN)}</a>${lifespan(p) ? ` <span class="year">${esc(lifespan(p))}</span>` : ''}</li>`)
           .join('')}</ul></section>`;
       })
       .join('');

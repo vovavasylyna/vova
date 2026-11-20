@@ -5,19 +5,25 @@ and `data.json` are served as they are, from the `tree` Vercel project.
 
 ## Updating the tree
 
-1. Export the tree from MyHeritage as GEDCOM (Family tree → Manage trees → Export to GEDCOM).
-2. Convert it:
+1. Export both trees from MyHeritage as GEDCOM (Family tree → Manage trees →
+   Export to GEDCOM): Volodymyr's tree and Anastasiia's (her side of the family).
+2. Convert them, with Volodymyr's tree first:
 
    ```bash
-   node tree/scripts/import-gedcom.mjs ~/Downloads/export.ged
+   node tree/scripts/import-gedcom.mjs ~/Downloads/vova.ged --merge ~/Downloads/nastia.ged
    ```
 
-3. Commit `tree/data.json` and deploy.
+   The script matches people found in both trees (by name and birth year, then
+   by their place in the family), fills in names the main tree is missing, adds
+   everyone else, and prints every match and conflict. On a conflict the more
+   precise date wins; on a tie, the merged tree wins.
+3. Commit `tree/data.json` and push to `main`.
 
-Never commit the `.ged` file itself — this repository is public and the export
-has full birth dates of living relatives. The importer keeps only the birth
-year (and drops the place) for anyone born in the last 100 years; pass
-`--full-dates` to keep everything.
+Never commit the `.ged` files — this repository is public and the exports have
+full birth dates of living relatives (and Anastasiia's has her email). The
+importer keeps only the birth year, and drops places and marriage details,
+for anyone who may still be alive: not marked as dead and born in the last
+100 years or with no birth date. Pass `--full-dates` to keep everything.
 
 ## Local preview
 
