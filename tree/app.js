@@ -13,6 +13,7 @@
   const MIN_K = 0.15;
   const MAX_K = 2;
   const MAX_DEPTH = 30;
+  const SPOUSE_DEPTH = 2; // generations of a spouse's ancestors shown beside the focus person's
 
   const $ = (id) => document.getElementById(id);
   const viewport = $('viewport');
@@ -270,6 +271,16 @@
     return need;
   }
 
+  // Largest offset for `contour` so that it sits left of `acc`.
+  function maxOffset(acc, contour, gap) {
+    let need = Infinity;
+    const n = Math.min(acc.length, contour.length);
+    for (let d = 0; d < n; d++) {
+      if (acc[d] && contour[d]) need = Math.min(need, acc[d][0] - gap(d) - contour[d][1]);
+    }
+    return need;
+  }
+
   function pack(trees, gap = () => GAP) {
     const offsets = [];
     const contour = [];
@@ -391,6 +402,27 @@
     }
     for (const l of down.links) links.push({ row: l.d, px: l.px, kids: l.kids, bus: l.bus });
 
+    // Ancestors of the focus person's spouses go above them, beside the focus
+    // person's own ancestors, so both sides of a couple are visible at once.
+    const above = up.contour.slice(1); // index i is row -(i + 1)
+    const spouses = down.nodes.filter((n) => n.d === 0 && n.role === 'spouse').sort((a, b) => Math.abs(a.x) - Math.abs(b.x));
+    for (const s of spouses) {
+      const t = ancestorTree(s.id, SPOUSE_DEPTH, seen);
+      if (t.nodes.length === 1) continue;
+      const c = t.contour.slice(1);
+      const gap = () => GAP * 2;
+      const dx = s.x > 0 ? Math.max(s.x, minOffset(above, c, gap)) : Math.min(s.x, maxOffset(above, c, gap));
+      mergeContour(above, c, dx);
+      for (const n of t.nodes) if (n.d > 0) nodes.push({ id: n.id, x: n.x + dx, row: -n.d, role: 'anc' });
+      for (const l of t.links) {
+        const px = l.px.map((v) => v + dx);
+        // The spouse's parents may sit off to the side; their line then bends
+        // a little higher than the focus person's own parents' line.
+        if (l.d === 0) links.push({ row: -1, px, kids: [s.x], bus: -12 });
+        else links.push({ row: -(l.d + 1), px, kids: l.kids.map((v) => v + dx) });
+      }
+    }
+
     let minX = Infinity;
     let maxX = -Infinity;
     let minRow = Infinity;
@@ -447,12 +479,46 @@
     const year = document.createElement('span');
     year.className = 'year';
     year.textContent = lifespan(p);
-    a.append(given, surname, year);
-    const rel = relations.get(id);
-    const label = [fullName(p), lifespan(p), rel].filter(Boolean).join(', ');
-    a.title = label;
-    a.setAttribute('aria-label', label);
+    const more = document.createElement('span');
+    more.className = 'more';
+    more.hidden = true;
+    more.setAttribute('aria-hidden', 'true');
+    a.append(given, surname, year, more);
+    a.dataset.label = [fullName(p), lifespan(p), relations.get(id)].filter(Boolean).join(', ');
     return a;
+  }
+
+  // Everyone a click on `id` would bring into view: their chart plus the
+  // relatives listed in the side panel.
+  const reachCache = new Map();
+  function reachOf(id) {
+    if (!reachCache.has(id)) {
+      const ids = new Set(layout(id).nodes.map((n) => n.id));
+      const { full, half } = siblingsOf(id);
+      for (const x of [...parentsOf(id), ...full, ...half, ...spousesOf(id), ...famsOf(id).flatMap((f) => f.k)]) ids.add(x);
+      ids.delete(id);
+      reachCache.set(id, ids);
+    }
+    return reachCache.get(id);
+  }
+
+  // "+N" on a card: how many people are behind it that the chart doesn't show yet.
+  function updateBadges(lay) {
+    const visible = new Set(lay.nodes.map((n) => n.id));
+    for (const n of lay.nodes) {
+      const el = cards.get(n.id);
+      if (!el) continue;
+      let hidden = 0;
+      if (n.role !== 'focus') for (const x of reachOf(n.id)) if (!visible.has(x)) hidden++;
+      const badge = el.querySelector('.more');
+      badge.hidden = !hidden;
+      badge.textContent = hidden ? `+${hidden}` : '';
+      const label = hidden
+        ? `${el.dataset.label}. Ще ${plural(hidden, 'людина', 'людини', 'людей')} у цій гілці`
+        : el.dataset.label;
+      el.title = label;
+      el.setAttribute('aria-label', label);
+    }
   }
 
   function render(id, animate) {
@@ -492,6 +558,7 @@
       void stage.offsetWidth; // start the fade from opacity 0
       for (const el of fresh) el.style.opacity = '';
     }
+    updateBadges(lay);
 
     const d = lay.links.map(linkPath).join('');
     clearTimeout(linkTimer);
@@ -869,7 +936,7 @@
   function show(id, animate) {
     focusId = id;
     currentLayout = render(id, animate);
-    frame(currentLayout, { animate, fit: !animate, minK: 0.6 });
+    frame(currentLayout, { animate, fit: !animate, minK: 0.7 });
     renderPanel(id);
     const p = person(id);
     document.title = id === rootId ? 'Сімейне дерево' : `${fullName(p)} — Сімейне дерево`;

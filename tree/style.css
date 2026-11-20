@@ -209,6 +209,25 @@ main {
 }
 .card .year:empty, .card .surname:empty { display: none; }
 
+/* "+N": more relatives behind this card than the chart shows. */
+.card .more {
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  min-width: 22px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 17px;
+  text-align: center;
+  color: #fff;
+  background: var(--accent);
+  border: 1.5px solid #fff;
+  border-radius: 9px;
+  overflow: visible;
+}
+.card .more[hidden] { display: none; }
+
 .controls {
   position: absolute;
   right: 12px;
@@ -379,3 +398,4 @@ dialog#people::backdrop { background: rgba(0, 0, 0, 0.25); }
     border: 1px solid var(--border);
   }
 }
+.card.u .more { background: #6b6b6b; }
