@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Сімейне дерево</title>
+  <meta name="description" content="Сімейне дерево родини Володимира Василини.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-root-dative="Володимиру">
+  <header>
+    <a class="brand" id="brand" href="#">Сімейне дерево</a>
+    <div class="search" role="search">
+      <input id="q" type="search" placeholder="Знайти людину…" autocomplete="off" spellcheck="false"
+             role="combobox" aria-label="Пошук людини за іменем" aria-expanded="false"
+             aria-controls="results" aria-autocomplete="list">
+      <ul id="results" role="listbox" aria-label="Знайдені люди" hidden></ul>
+    </div>
+    <nav>
+      <button type="button" class="linklike" id="all-btn">усі люди</button>
+      <a href="https://vasylyna.net">vasylyna.net</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="viewport" aria-label="Дерево">
+      <div id="stage"><svg id="links" aria-hidden="true"></svg></div>
+      <div class="focusbar" id="focusbar" hidden></div>
+      <p class="hint" id="hint">Натисніть на людину, щоб побачити її гілку. Дерево можна перетягувати й масштабувати.</p>
+      <div class="controls">
+        <button type="button" id="zoom-in" title="Збільшити" aria-label="Збільшити">+</button>
+        <button type="button" id="zoom-out" title="Зменшити" aria-label="Зменшити">&minus;</button>
+        <button type="button" id="zoom-fit" title="Показати всю гілку" aria-label="Показати всю гілку">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M1.5 5.5v-4h4M10.5 1.5h4v4M14.5 10.5v4h-4M5.5 14.5h-4v-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+    </section>
+    <aside id="panel" aria-live="polite">
+      <p class="muted">Завантаження…</p>
+    </aside>
+  </main>
+
+  <dialog id="people" aria-labelledby="people-title">
+    <div class="dialog-head">
+      <h2 id="people-title">Усі люди</h2>
+      <button type="button" class="linklike" id="people-close">закрити</button>
+    </div>
+    <div id="people-list"></div>
+  </dialog>
+
+  <noscript><p class="noscript">Щоб переглянути дерево, увімкніть JavaScript.</p></noscript>
+</body>
+</html>

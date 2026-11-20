@@ -3,3 +3,6 @@ resources/
 .hugo_build.lock
 .DS_Store
 old/
+
+# Raw genealogy exports contain living people's full birth dates; only tree/data.json is committed.
+*.ged
